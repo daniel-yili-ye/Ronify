@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block main %}
+  <h1>{{ company[0]["company"] }}</h1>
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Guests</th>
+      <th scope="col">Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for customer in customers %}
+        <tr>
+          <td scope="row">{{ customer["name"] }}</td>
+          <td>{{ customer["phone"] }}</td>
+          <td>{{ customer["email"] }}</td>
+          <td>{{ customer["guests"] }}</td>
+          <td>{{ customer["time"] }}</td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
