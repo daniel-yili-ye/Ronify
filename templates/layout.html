@@ -34,13 +34,16 @@
             <div class="collapse navbar-collapse" id="navbar">
                 {% if session.user_id %}
                     <ul class="navbar-nav mr-auto mt-2">
-                        <li class="nav-item">Company Name</li>
+                        <li class="nav-item"><a class="nav-link">Visiters</a></li>
+                        <li class="nav-item"><a class="nav-link">QR Code</a></li>
+                        <li class="nav-item"><a class="nav-link">Export</a></li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                     </ul>
                 {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/business/iron-chef"> Iron Chef</a></li>
                         <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                         <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
                     </ul>
@@ -59,6 +62,10 @@
         <main class="container p-5">
             {% block main %}{% endblock %}
         </main>
+
+        <footer class="text-center">
+            powered by ronify
+        </footer>
 
     </body>
 
