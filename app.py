@@ -34,10 +34,10 @@ Session(app)
 
 # Configure CS50 Library to use SQLite database
 db = mysql.connector.connect(
-host="MYSQL5006.site4now.net",
-user="9d6e6e_ronify",
-password="Ronify@2020",
-database="db_9d6e6e_ronify"
+    host="MYSQL5006.site4now.net",
+    user="9d6e6e_ronify",
+    password="Ronify@2020",
+    database="db_9d6e6e_ronify"
 )
 
 @app.route("/")
