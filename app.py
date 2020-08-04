@@ -74,16 +74,20 @@ def login():
         elif not request.form.get("password"):
             return apology("must provide password", 403)
 
-        # Query database for info based on user's email
-        rows = db.execute("SELECT * FROM users WHERE email = :email",
-                          email=request.form.get("email"))
+        cur = db.cursor()
+
+        # Query database for password based on user's email
+        cur.execute("SELECT id, passwordhash FROM business WHERE email = %s", (request.form.get("email"), ))
+        row = cur.fetchall()
+        user_id = row[0][0]
+        p_hash = row[0][1]
 
         # Ensure email exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+        if len(row) != 1 or not check_password_hash(p_hash, request.form.get("password")):
             return apology("invalid email and/or password", 403)
 
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = user_id
 
         # Redirect user to home page
         return redirect("/")
@@ -115,7 +119,7 @@ def register():
     if request.method == "POST":
 
         # Ensure username was submitted
-        if not request.form.get("company"):
+        if not request.form.get("name"):
             return apology("must provide a company name", 403)
 
         # Ensure email was submitted
@@ -134,23 +138,34 @@ def register():
         elif request.form.get("password") != request.form.get("confirm"):
             return apology("password and confirmation do not match", 403)
 
-        comp = request.form.get("company").trim()
-        comp_code = comp.replace('.', '').rep
-
         cur = db.cursor()
 
-        # Insert company name, email, and password hash into database
-        cur.execute("INSERT INTO users (company, email, hash) VALUES (:company, :email, :password)",
-            company=request.form.get("company"), email=request.form.get("email"), password=generate_password_hash(request.form.get("password")))
+        # FIND A WAY TO REPLACE OTHER INVALID CHARS
+        name = request.form.get("name")
+        name = name.strip()
+        bcode = name.replace(" ", "-").lower()
 
-        # Query database for current user id based on company name
-        user_id = db.execute("SELECT id FROM users WHERE company = :company", company=request.form.get("company"))
+        i = 1
+        while True:          
+            cur.execute("SELECT id FROM business WHERE code = %s", (bcode, ))
+            bus= cur.fetchall()
+            if len(bus) == 0:
+                break
+            else:
+                bcode = bcode + str(i)
+                i += 1
+
+        # Insert company name, email, and password hash into database
+        query = "INSERT INTO business (name, code, email, passwordhash, createdat) VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)"
+        values = (name, bcode, request.form.get("email"), generate_password_hash(request.form.get("password")))
+
+        cur.execute(query, values)
 
         # Remember that the new user has logged in
-        session["user_id"] = user_id[0]["id"]
+        session["user_id"] = cur.lastrowid
 
         # Redirect user to home page
-        return redirect("/qrcode")
+        return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -160,7 +175,7 @@ def register():
 @app.route("/business/<bcode>", methods=["GET", "POST"])
 def business(bcode):
     """Customer form"""
-    print("")
+
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
@@ -175,20 +190,39 @@ def business(bcode):
         # Ensure number of guests was submitted
         elif not request.form.get("guests"):
             return apology("must provide number of guests", 403)
+        
+        cur = db.cursor()
+
+        cur.execute("SELECT id FROM business WHERE code = %s", (bcode, ))
+        business_id = cur.fetchall()
+
+        if business_id:
+            business_id = business_id[0][0]
+        else:
+            business_id = 0
 
         # Insert name, phone number, email, guests, and time into customers database
-        db.execute("INSERT INTO customers (name, phone, email, guests, time) VALUES (:name, :phone, :email, :guests, CURRENT_TIMESTAMP)",
-            name=request.form.get("name"), phone=request.form.get("phone"), email=request.form.get("email"), guests=request.form.get("guests"))
+        query = "INSERT INTO visitor (business_id, name, phone, email, guests, createdat) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
+        values = (business_id, request.form.get("name"), request.form.get("phone"), request.form.get("email"), request.form.get("guests"))
 
-        # Insert business id into customers database
-        db.execute("INSERT INTO customers (id) VALUES (:user_id)", user_id=session["user_id"])
+        cur.execute(query, values)
 
         # Redirect user to home page
         return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("business.html", bcode=bcode, bname="Yesleaf Superstore")
+        cur = db.cursor()
+
+        cur.execute("SELECT name FROM business WHERE code = %s", (bcode, ))
+        bname = cur.fetchall()
+
+        if bname:
+            bname = bname[0][0]
+        else:
+            bname = "Not registered"
+
+        return render_template("business.html", bname=bname, bcode=bcode)
 
 
 def errorhandler(e):
