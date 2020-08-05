@@ -1,4 +1,5 @@
 import os
+import re
 import io 
 import base64
 import mysql.connector
@@ -11,6 +12,8 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 from io import BytesIO
 from helpers import apology, login_required
+
+# export FLASK_APP='app.py'
 
 # Configure application
 app = Flask(__name__)
@@ -140,10 +143,9 @@ def register():
 
         cur = db.cursor()
 
-        # FIND A WAY TO REPLACE OTHER INVALID CHARS
-        name = request.form.get("name")
-        name = name.strip()
-        bcode = name.replace(" ", "-").lower()
+        # Creating unique bcode from business name
+        name = request.form.get("name").strip()
+        bcode = re.sub('[^A-Za-z0-9]+', '', name)
 
         i = 0
         while True:          
@@ -237,7 +239,7 @@ def dashboard():
     rows = cur.fetchall()
 
     cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
-    name = cur.fetchall()
+    name = (cur.fetchall())[0][0]
 
     return render_template("dashboard.html", rows=rows, name=name)
 

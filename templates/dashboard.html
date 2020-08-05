@@ -4,8 +4,12 @@
     Dashboard
 {% endblock %}
 
+{% block li %}
+    {{ name }}
+{% endblock %}
+
 {% block main %}
-<h1>{{ name[0][0] }}</h1>
+<h1>{{ name }}</h1>
 <table class="table table-striped">
   <thead>
     <tr>
