@@ -5,7 +5,7 @@ nav .navbar-brand
 }
 
 /* colors for brand */
-.white
+nav a, .white
 {
     color: white;
 }

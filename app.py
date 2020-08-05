@@ -35,22 +35,32 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Configure CS50 Library to use SQLite database
-db = mysql.connector.connect(
-    host="MYSQL5006.site4now.net",
-    user="9d6e6e_ronify",
-    password="Ronify@2020",
-    database="db_9d6e6e_ronify"
-)
+# Configure MySQL
+def getconnection():
+    db = mysql.connector.connect(
+        host="MYSQL5006.site4now.net",
+        user="9d6e6e_ronify",
+        password="Ronify@2020",
+        database="db_9d6e6e_ronify"
+    )
+    return db
 
 @app.route("/")
 def index(): 
     
+    db = getconnection()
     cur = db.cursor()
+    
     cur.execute("SELECT count(*) FROM business") 
     bcount = cur.fetchall()
+    
     cur.execute("SELECT count(*) FROM visitor") 
     vcount = cur.fetchall()
+    
+    cur.close()
+    db.close()
+
+    # Generate QR Code
     qrimg = qrcode.make('https://yesleaf.com/ronify/business/iron-chefabcd')
 
     buffered = BytesIO()
@@ -78,6 +88,7 @@ def login():
         elif not request.form.get("password"):
             return apology("must provide password", 403)
 
+        db = getconnection()
         cur = db.cursor()
 
         # Query database for password based on user's email
@@ -85,6 +96,9 @@ def login():
         rows = cur.fetchall()
         user_id = rows[0][0]
         p_hash = rows[0][1]
+
+        cur.close()
+        db.close()
 
         # Ensure email exists and password is correct
         if len(rows) != 1 or not check_password_hash(p_hash, request.form.get("password")):
@@ -142,6 +156,7 @@ def register():
         elif request.form.get("password") != request.form.get("confirm"):
             return apology("password and confirmation do not match", 403)
 
+        db = getconnection()
         cur = db.cursor()
 
         # Creating unique bcode from business name
@@ -168,6 +183,9 @@ def register():
 
         # Remember that the new user has logged in
         session["user_id"] = cur.lastrowid
+
+        cur.close()
+        db.close()
 
         # Redirect user to home page
         return redirect("/dashboard")
@@ -196,6 +214,7 @@ def business(bcode):
         elif not request.form.get("guests"):
             return apology("must provide number of guests", 403)
         
+        db = getconnection()
         cur = db.cursor()
 
         cur.execute("SELECT id FROM business WHERE code = %s", (bcode, ))
@@ -212,11 +231,16 @@ def business(bcode):
 
         cur.execute(query, values)
 
+        cur.close()
+        db.close()
+
         # Redirect user to home page
         return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
+        
+        db = getconnection()
         cur = db.cursor()
 
         cur.execute("SELECT name FROM business WHERE code = %s", (bcode, ))
@@ -227,6 +251,9 @@ def business(bcode):
         else:
             bname = "Not registered"
 
+        cur.close()
+        db.close()
+
         return render_template("business.html", bname=bname, bcode=bcode)
         
 
@@ -234,6 +261,7 @@ def business(bcode):
 @login_required
 def dashboard():
 
+    db = getconnection()
     cur = db.cursor()
 
     cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s", (session["user_id"], ))
@@ -241,6 +269,9 @@ def dashboard():
 
     cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
     name = (cur.fetchall())[0][0]
+
+    cur.close()
+    db.close()
 
     return render_template("dashboard.html", rows=rows, name=name)
 

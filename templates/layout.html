@@ -27,25 +27,25 @@
     <body>
 
         <nav class="navbar navbar-expand-md navbar-custom">
-           <a class="navbar-brand" href="/"><span class="white">ronify</span></a>
+           <a class="navbar-brand" href="/"><span>😷 ronify</span></a>
             <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbar">
+            <div class="collapse navbar-collapse white" id="navbar">
                 {% if session.user_id %}
                     <ul class="navbar-nav mr-auto mt-2">
-                        <li class="nav-item"><a class="nav-link white">{% block li %}{% endblock %}</a></li>
-                        <li class="nav-item"><a class="nav-link white">QR Code</a></li>
-                        <li class="nav-item"><a class="nav-link white">Export</a></li>
+                        <li class="nav-item"><a class="nav-link">{% block li %}{% endblock %}</a></li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link white" href="/logout">Log Out</a></li>
+                        <li class="nav-item"><a class="nav-link">QR Code</a></li>
+                        <li class="nav-item"><a class="nav-link">Export Data</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                     </ul>
                 {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link white" href="/business/iron-chef-japanese-steakhouse"> Iron Chef</a></li>
-                        <li class="nav-item"><a class="nav-link white" href="/register">Register</a></li>
-                        <li class="nav-item"><a class="nav-link white" href="/login">Log In</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/business/iron-chef-japanese-steakhouse">Iron Chef</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
                     </ul>
                 {% endif %}
             </div>
