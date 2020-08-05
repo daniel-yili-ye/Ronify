@@ -78,19 +78,19 @@ def login():
 
         # Query database for password based on user's email
         cur.execute("SELECT id, passwordhash FROM business WHERE email = %s", (request.form.get("email"), ))
-        row = cur.fetchall()
-        user_id = row[0][0]
-        p_hash = row[0][1]
+        rows = cur.fetchall()
+        user_id = rows[0][0]
+        p_hash = rows[0][1]
 
         # Ensure email exists and password is correct
-        if len(row) != 1 or not check_password_hash(p_hash, request.form.get("password")):
+        if len(rows) != 1 or not check_password_hash(p_hash, request.form.get("password")):
             return apology("invalid email and/or password", 403)
 
         # Remember which user has logged in
         session["user_id"] = user_id
 
         # Redirect user to home page
-        return redirect("/")
+        return redirect("/dashboard")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -145,18 +145,20 @@ def register():
         name = name.strip()
         bcode = name.replace(" ", "-").lower()
 
-        i = 1
+        i = 0
         while True:          
-            cur.execute("SELECT id FROM business WHERE code = %s", (bcode, ))
-            bus= cur.fetchall()
-            if len(bus) == 0:
-                break
-            else:
-                bcode = bcode + str(i)
+            cur.execute("SELECT count(*) FROM business WHERE code = %s", (bcode, ))
+            repeat = cur.fetchall()
+            if repeat[0][0] > 0:
+                if i > 0:
+                    bcode = bcode[:-1]
                 i += 1
+                bcode = bcode + str(i)
+            else:
+                break
 
         # Insert company name, email, and password hash into database
-        query = "INSERT INTO business (name, code, email, passwordhash, createdat) VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)"
+        query = "INSERT INTO business (name, code, email, passwordhash, created_at) VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)"
         values = (name, bcode, request.form.get("email"), generate_password_hash(request.form.get("password")))
 
         cur.execute(query, values)
@@ -165,7 +167,7 @@ def register():
         session["user_id"] = cur.lastrowid
 
         # Redirect user to home page
-        return redirect("/")
+        return redirect("/dashboard")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -202,7 +204,7 @@ def business(bcode):
             business_id = 0
 
         # Insert name, phone number, email, guests, and time into customers database
-        query = "INSERT INTO visitor (business_id, name, phone, email, guests, createdat) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
+        query = "INSERT INTO visitor (business_id, name, phone, email, guests, created_at) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
         values = (business_id, request.form.get("name"), request.form.get("phone"), request.form.get("email"), request.form.get("guests"))
 
         cur.execute(query, values)
@@ -223,6 +225,21 @@ def business(bcode):
             bname = "Not registered"
 
         return render_template("business.html", bname=bname, bcode=bcode)
+        
+
+@app.route("/dashboard", methods=["GET", "POST"])
+@login_required
+def dashboard():
+
+    cur = db.cursor()
+
+    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s", (session["user_id"], ))
+    rows = cur.fetchall()
+
+    cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
+    name = cur.fetchall()
+
+    return render_template("dashboard.html", rows=rows, name=name)
 
 
 def errorhandler(e):
