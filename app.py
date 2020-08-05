@@ -45,6 +45,7 @@ db = mysql.connector.connect(
 
 @app.route("/")
 def index(): 
+    
     cur = db.cursor()
     cur.execute("SELECT count(*) FROM business") 
     bcount = cur.fetchall()

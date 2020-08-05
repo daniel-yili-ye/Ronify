@@ -5,21 +5,18 @@ nav .navbar-brand
 }
 
 /* colors for brand */
-nav .navbar-brand .blue
+.white
 {
-    color: #537fbe;
+    color: white;
 }
-nav .navbar-brand .red
+
+.grey
 {
-    color: #ea433b;
+    color: #747474;
 }
-nav .navbar-brand .yellow
-{
-    color: #f5b82e;
-}
-nav .navbar-brand .green
-{
-    color: #2e944b;
+
+.navbar-custom { 
+    background-color: #536DFE;
 }
 
 main .form-control
@@ -49,5 +46,5 @@ main img
 footer
 {
     font-size: 16px;
-    color: rgb(89, 0, 255);
+    color: #536DFE;
 }

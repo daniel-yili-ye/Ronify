@@ -9,27 +9,27 @@
 {% endblock %}
 
 {% block main %}
-<h1>{{ name }}</h1>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Phone Number</th>
-      <th scope="col">Email</th>
-      <th scope="col">Number of Guests</th>
-      <th scope="col">Time</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for row in rows %}
-        <tr>
-          <td scope="row">{{row[0]}}</td>
-          <td>{{row[1]}}</td>
-          <td>{{row[2]}}</td>
-          <td>{{row[3]}}</td>
-          <td>{{row[4]}}</td>
-        </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <h1>{{ name }}</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Email</th>
+        <th scope="col">Number of Guests</th>
+        <th scope="col">Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+          <tr>
+            <td scope="row">{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>
+            <td>{{row[4]}}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
