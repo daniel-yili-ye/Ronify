@@ -222,11 +222,17 @@ def business(code):
 
         cur.execute(query, values)
 
+        # Redirect user to home page
+        if session["user_id"]:
+            return redirect("/dashboard")
+        else:
+            cur.execute("SELECT name FROM business WHERE code = %s", (code, ))
+            business_name = (cur.fetchall())[0][0]
+            
+            return render_template("thankyou.html", name=business_name)
+        
         cur.close()
         db.close()
-
-        # Redirect user to home page
-        return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -244,28 +250,52 @@ def business(code):
         db.close()
 
         return render_template("business.html", name=name, code=code)
-        
 
-@app.route("/dashboard", methods=["GET"])
+
+@app.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
 
     db = getconnection()
     cur = db.cursor()
 
-    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s", (session["user_id"], ))
-    rows = cur.fetchall()
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+        
+        if "hour" in request.form:
+            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 HOUR) ORDER BY created_at DESC", (session["user_id"], ))
+        elif "day" in request.form:
+            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 DAY) ORDER BY created_at DESC", (session["user_id"], ))
+        elif "week" in request.form:
+            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 WEEK) ORDER BY created_at DESC", (session["user_id"], ))
 
-    cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
-    name = (cur.fetchall())[0][0]
+        rows = cur.fetchall()
 
-    cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
-    code = (cur.fetchall())[0][0]
+        cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
+        name = (cur.fetchall())[0][0]
+
+        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+        code = (cur.fetchall())[0][0]
+
+
+        return render_template("dashboard.html", rows=rows, name=name, code=code)
+
+    else:
+
+        cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
+        rows = cur.fetchall()
+
+        cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
+        name = (cur.fetchall())[0][0]
+
+        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+        code = (cur.fetchall())[0][0]
+
+        return render_template("dashboard.html", rows=rows, name=name, code=code)
 
     cur.close()
     db.close()
 
-    return render_template("dashboard.html", rows=rows, name=name, code=code)
 
 @app.route("/qrcode", methods=["GET"])
 @login_required
