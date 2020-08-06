@@ -5,7 +5,7 @@ import base64
 import mysql.connector
 import qrcode
 
-from flask import Flask, flash, jsonify, redirect, render_template, request, session
+from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -60,14 +60,7 @@ def index():
     cur.close()
     db.close()
 
-    # Generate QR Code
-    qrimg = qrcode.make('https://yesleaf.com/ronify/business/iron-chefabcd')
-
-    buffered = BytesIO()
-    qrimg.save(buffered, format='png')
-    img_str = base64.b64encode(buffered.getvalue()).decode()
-
-    return render_template("index.html", bcount=bcount[0][0], vcount=vcount[0][0], imgstr=img_str)
+    return render_template("index.html", bcount=bcount[0][0], vcount=vcount[0][0])
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -159,25 +152,25 @@ def register():
         db = getconnection()
         cur = db.cursor()
 
-        # Creating unique bcode from business name
+        # Creating unique code from business name
         name = request.form.get("name").strip()
-        bcode = re.sub('[^A-Za-z0-9]+', '', name)
+        code = re.sub('[^A-Za-z0-9]+', '', name)
 
         i = 0
         while True:          
-            cur.execute("SELECT count(*) FROM business WHERE code = %s", (bcode, ))
+            cur.execute("SELECT count(*) FROM business WHERE code = %s", (code, ))
             repeat = cur.fetchall()
             if repeat[0][0] > 0:
                 if i > 0:
-                    bcode = bcode[:-1]
+                    code = code[:-1]
                 i += 1
-                bcode = bcode + str(i)
+                code = code + str(i)
             else:
                 break
 
         # Insert company name, email, and password hash into database
         query = "INSERT INTO business (name, code, email, passwordhash, created_at) VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)"
-        values = (name, bcode, request.form.get("email"), generate_password_hash(request.form.get("password")))
+        values = (name, code, request.form.get("email"), generate_password_hash(request.form.get("password")))
 
         cur.execute(query, values)
 
@@ -195,8 +188,8 @@ def register():
         return render_template("register.html")
 
 
-@app.route("/business/<bcode>", methods=["GET", "POST"])
-def business(bcode):
+@app.route("/business/<code>", methods=["GET", "POST"])
+def business(code):
     """Customer form"""
 
     # User reached route via POST (as by submitting a form via POST)
@@ -217,13 +210,11 @@ def business(bcode):
         db = getconnection()
         cur = db.cursor()
 
-        cur.execute("SELECT id FROM business WHERE code = %s", (bcode, ))
+        cur.execute("SELECT id FROM business WHERE code = %s", (code, ))
         business_id = cur.fetchall()
 
-        if business_id:
-            business_id = business_id[0][0]
-        else:
-            business_id = 0
+        # determines if business id exists for the passed code
+        business_id = business_id[0][0]
 
         # Insert name, phone number, email, guests, and time into customers database
         query = "INSERT INTO visitor (business_id, name, phone, email, guests, created_at) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
@@ -243,21 +234,19 @@ def business(bcode):
         db = getconnection()
         cur = db.cursor()
 
-        cur.execute("SELECT name FROM business WHERE code = %s", (bcode, ))
-        bname = cur.fetchall()
+        cur.execute("SELECT name FROM business WHERE code = %s", (code, ))
+        name = cur.fetchall()
 
-        if bname:
-            bname = bname[0][0]
-        else:
-            bname = "Not registered"
+        # passing through business name
+        name = name[0][0]
 
         cur.close()
         db.close()
 
-        return render_template("business.html", bname=bname, bcode=bcode)
+        return render_template("business.html", name=name, code=code)
         
 
-@app.route("/dashboard", methods=["GET", "POST"])
+@app.route("/dashboard", methods=["GET"])
 @login_required
 def dashboard():
 
@@ -270,11 +259,38 @@ def dashboard():
     cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
     name = (cur.fetchall())[0][0]
 
+    cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+    code = (cur.fetchall())[0][0]
+
     cur.close()
     db.close()
 
-    return render_template("dashboard.html", rows=rows, name=name)
+    return render_template("dashboard.html", rows=rows, name=name, code=code)
 
+@app.route("/qrcode", methods=["GET"])
+@login_required
+def qr_code():
+
+    db = getconnection()
+    cur = db.cursor()
+
+    cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
+    name = (cur.fetchall())[0][0]
+
+    cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+    code = (cur.fetchall())[0][0]
+
+    cur.close()
+    db.close()
+    
+    # Generate QR Code
+    qrimg = qrcode.make('https://yesleaf.com/ronify/business/' + code)
+
+    buffered = BytesIO()
+    qrimg.save(buffered, format='png')
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+
+    return render_template("qrcode.html", name=name, imgstr=img_str)
 
 def errorhandler(e):
     """Handle error"""

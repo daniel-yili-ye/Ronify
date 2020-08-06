@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    QR Code
+{% endblock %}
+
+{% block main %}
+ <h1>{{name}}</h1>
+    <img src="data:image/;base64,{{imgstr}}" alt="Your Ronify QR Code">
+    <p>
+        1. Scan the QR Code with your mobile camera
+    </p>
+    <p>
+        2. Submit the form and include your name, phone number, and # of guests
+    </p>
+    <p>
+        3. Wear a mask to protect yourself and those around you
+    </p>
+{% endblock %}

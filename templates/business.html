@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 
-
 {% block main %}
-    <h1> {{bname}} </h1>
+    {% if name %}
+    <h1> {{name}} </h1>
     <h6 class="grey"> Due to public health regulations, businesses are required to collect the following information about their customers:</h6>
-    <form action="/business/{{bcode}}" method="post">
+    <form action="/business/{{code}}" method="post">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Name" type="text">
         </div>
@@ -19,4 +19,7 @@
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
     </form>
+    {% else %}
+    <h1>Sorry, the following business does not exist.</h1>
+    {% endif %}
 {% endblock %}
