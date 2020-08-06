@@ -70,6 +70,9 @@ def login():
     # Forget any user_id
     session.clear()
 
+    db = getconnection()
+    cur = db.cursor()
+
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
@@ -81,17 +84,11 @@ def login():
         elif not request.form.get("password"):
             return apology("must provide password", 403)
 
-        db = getconnection()
-        cur = db.cursor()
-
         # Query database for password based on user's email
         cur.execute("SELECT id, passwordhash FROM business WHERE email = %s", (request.form.get("email"), ))
         rows = cur.fetchall()
         user_id = rows[0][0]
         p_hash = rows[0][1]
-
-        cur.close()
-        db.close()
 
         # Ensure email exists and password is correct
         if len(rows) != 1 or not check_password_hash(p_hash, request.form.get("password")):
@@ -106,6 +103,9 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
+    
+    cur.close()
+    db.close()
 
 
 @app.route("/logout")
@@ -125,6 +125,9 @@ def register():
 
     # Forget any user_id
     session.clear()
+
+    db = getconnection()
+    cur = db.cursor()
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -148,9 +151,6 @@ def register():
         # Ensure the password and confirmation password match
         elif request.form.get("password") != request.form.get("confirm"):
             return apology("password and confirmation do not match", 403)
-
-        db = getconnection()
-        cur = db.cursor()
 
         # Creating unique code from business name
         name = request.form.get("name").strip()
@@ -177,20 +177,23 @@ def register():
         # Remember that the new user has logged in
         session["user_id"] = cur.lastrowid
 
-        cur.close()
-        db.close()
-
         # Redirect user to home page
         return redirect("/dashboard")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
+    
+    cur.close()
+    db.close()
 
 
 @app.route("/business/<code>", methods=["GET", "POST"])
 def business(code):
     """Customer form"""
+
+    db = getconnection()
+    cur = db.cursor()
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -206,9 +209,6 @@ def business(code):
         # Ensure number of guests was submitted
         elif not request.form.get("guests"):
             return apology("must provide number of guests", 403)
-        
-        db = getconnection()
-        cur = db.cursor()
 
         cur.execute("SELECT id FROM business WHERE code = %s", (code, ))
         business_id = cur.fetchall()
@@ -222,17 +222,17 @@ def business(code):
 
         cur.execute(query, values)
 
-        cur.close()
-        db.close()
-
         # Redirect user to home page
-        return redirect("/")
+        if session["user_id"]:
+            return redirect("/dashboard")
+        else:
+            cur.execute("SELECT name FROM business WHERE code = %s", (code, ))
+            business_name = (cur.fetchall())[0][0]
+            
+            return render_template("thankyou.html", name=business_name)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        
-        db = getconnection()
-        cur = db.cursor()
 
         cur.execute("SELECT name FROM business WHERE code = %s", (code, ))
         name = cur.fetchall()
@@ -240,32 +240,56 @@ def business(code):
         # passing through business name
         name = name[0][0]
 
+        return render_template("business.html", name=name, code=code)
+
         cur.close()
         db.close()
 
-        return render_template("business.html", name=name, code=code)
-        
 
-@app.route("/dashboard", methods=["GET"])
+@app.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
 
     db = getconnection()
     cur = db.cursor()
 
-    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s", (session["user_id"], ))
-    rows = cur.fetchall()
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+        
+        if "hour" in request.form:
+            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 HOUR) ORDER BY created_at DESC", (session["user_id"], ))
+        elif "day" in request.form:
+            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 DAY) ORDER BY created_at DESC", (session["user_id"], ))
+        elif "week" in request.form:
+            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 WEEK) ORDER BY created_at DESC", (session["user_id"], ))
 
-    cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
-    name = (cur.fetchall())[0][0]
+        rows = cur.fetchall()
 
-    cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
-    code = (cur.fetchall())[0][0]
+        cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
+        name = (cur.fetchall())[0][0]
+
+        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+        code = (cur.fetchall())[0][0]
+
+
+        return render_template("dashboard.html", rows=rows, name=name, code=code)
+
+    else:
+
+        cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
+        rows = cur.fetchall()
+
+        cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
+        name = (cur.fetchall())[0][0]
+
+        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+        code = (cur.fetchall())[0][0]
+
+        return render_template("dashboard.html", rows=rows, name=name, code=code)
 
     cur.close()
     db.close()
 
-    return render_template("dashboard.html", rows=rows, name=name, code=code)
 
 @app.route("/qrcode", methods=["GET"])
 @login_required
@@ -291,6 +315,7 @@ def qr_code():
     img_str = base64.b64encode(buffered.getvalue()).decode()
 
     return render_template("qrcode.html", name=name, code=code, imgstr=img_str)
+    
 
 def errorhandler(e):
     """Handle error"""
