@@ -5,8 +5,10 @@
 {% endblock %}
 
 {% block main %}
- <h1>{{name}}</h1>
+<div class=QRDiv>
+<h1>{{name}}</h1>
     <img src="data:image/;base64,{{imgstr}}" alt="Your Ronify QR Code">
+    <h3>Instructions</h3>
     <p>
         1. Scan the QR Code with your mobile camera
     </p>
@@ -16,4 +18,5 @@
     <p>
         3. Wear a mask to protect yourself and those around you
     </p>
+</div> 
 {% endblock %}
