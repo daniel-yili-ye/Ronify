@@ -52,15 +52,15 @@ def index():
     cur = db.cursor()
     
     cur.execute("SELECT count(*) FROM business") 
-    bcount = cur.fetchall()
+    bcount = (cur.fetchall())[0][0]
     
     cur.execute("SELECT count(*) FROM visitor") 
-    vcount = cur.fetchall()
+    vcount = (cur.fetchall())[0][0]
     
     cur.close()
     db.close()
 
-    return render_template("index.html", bcount=bcount[0][0], vcount=vcount[0][0])
+    return render_template("index.html", bcount=bcount, vcount=vcount)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -290,7 +290,7 @@ def qr_code():
     qrimg.save(buffered, format='png')
     img_str = base64.b64encode(buffered.getvalue()).decode()
 
-    return render_template("qrcode.html", name=name, imgstr=img_str)
+    return render_template("qrcode.html", name=name, code=code, imgstr=img_str)
 
 def errorhandler(e):
     """Handle error"""
