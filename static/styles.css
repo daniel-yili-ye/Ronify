@@ -5,7 +5,7 @@ nav .navbar-brand
 }
 
 /* colors for brand */
-nav a, .white
+.white, a
 {
     color: white;
 }
@@ -48,7 +48,5 @@ footer
     background-color: #536DFE;
     font-size: 16px;
     color: white;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
+    box-shadow: 0 50vh 0 50vh #536DFE;
 }
