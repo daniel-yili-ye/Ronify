@@ -5,7 +5,7 @@ import base64
 import mysql.connector
 import qrcode
 
-from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, flash, jsonify, redirect, render_template, request, send_file, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -291,6 +291,30 @@ def dashboard():
     db.close()
 
 
+@app.route("/export", methods=["GET"])
+@login_required
+def export():
+
+    db = getconnection()
+    cur = db.cursor()
+
+    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
+    rows = cur.fetchall()
+
+    #wb = Workbook('customers.xlsx')
+    #wb.add_worksheet('All Data')
+
+    #for item in rows:
+    #    wb.write(item)
+    #wb.close()
+
+    #return send_file('path/to/workbook.xlsx')
+
+    cur.close()
+    db.close()
+
+
+
 @app.route("/qrcode", methods=["GET"])
 @login_required
 def qr_code():
@@ -315,7 +339,31 @@ def qr_code():
     img_str = base64.b64encode(buffered.getvalue()).decode()
 
     return render_template("qrcode.html", name=name, code=code, imgstr=img_str)
-    
+
+
+@app.route("/about", methods=["GET"])
+def about():
+
+    return render_template("about.html")
+
+
+@app.route("/contact", methods=["GET"])
+def contact():
+
+    return render_template("contact.html")
+
+
+@app.route("/terms&conditions", methods=["GET"])
+def termsconditions():
+
+    return render_template("terms&conditions.html")
+
+
+@app.route("/privacy", methods=["GET"])
+def privacy():
+
+    return render_template("privacy.html")
+
 
 def errorhandler(e):
     """Handle error"""
