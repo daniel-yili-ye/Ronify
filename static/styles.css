@@ -45,6 +45,10 @@ main img
 
 footer
 {
+    background-color: #536DFE;
     font-size: 16px;
-    color: #536DFE;
+    color: white;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }
