@@ -247,48 +247,32 @@ def business(code):
     db.close()
 
 
-@app.route("/dashboard", methods=["GET", "POST"])
+@app.route("/dashboard", methods=["GET"])
 @login_required
 def dashboard():
 
     db = getconnection()
     cur = db.cursor()
 
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
-        
-        if "hour" in request.form:
-            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 HOUR) ORDER BY created_at DESC", (session["user_id"], ))
-        elif "today" in request.form:
-            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 DAY) ORDER BY created_at DESC", (session["user_id"], ))
-        elif "week" in request.form:
-            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 WEEK) ORDER BY created_at DESC", (session["user_id"], ))
-        elif "all" in request.form:
-            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
+    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 DAY) ORDER BY created_at DESC", (session["user_id"], ))
+    today = cur.fetchall()
 
-        rows = cur.fetchall()
+    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 WEEK) ORDER BY created_at DESC", (session["user_id"], ))
+    week = cur.fetchall()
 
-        cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
-        name = (cur.fetchall())[0][0]
+    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 MONTH) ORDER BY created_at DESC", (session["user_id"], ))
+    month = cur.fetchall()
 
-        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
-        code = (cur.fetchall())[0][0]
+    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
+    all_time = cur.fetchall()
 
+    cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
+    name = (cur.fetchall())[0][0]
 
-        return render_template("dashboard.html", rows=rows, name=name, code=code)
+    cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+    code = (cur.fetchall())[0][0]
 
-    else:
-
-        cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 DAY) ORDER BY created_at DESC", (session["user_id"], ))
-        rows = cur.fetchall()
-
-        cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
-        name = (cur.fetchall())[0][0]
-
-        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
-        code = (cur.fetchall())[0][0]
-
-        return render_template("dashboard.html", rows=rows, name=name, code=code)
+    return render_template("dashboard.html", today=today, week=week, month=month, all_time=all_time, name=name, code=code)
 
     cur.close()
     db.close()
