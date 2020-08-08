@@ -178,7 +178,7 @@ def register():
         session["user_id"] = cur.lastrowid
 
         # Redirect user to home page
-        return redirect("/dashboard")
+        return redirect("/qrcode")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -223,9 +223,10 @@ def business(code):
         cur.execute(query, values)
 
         # Redirect user to home page
-        if session["user_id"]:
-            return redirect("/dashboard")
-        else:
+        try:
+            if session["user_id"]:
+                return redirect("/dashboard")
+        except KeyError:
             cur.execute("SELECT name FROM business WHERE code = %s", (code, ))
             business_name = (cur.fetchall())[0][0]
             
@@ -345,16 +346,17 @@ def qr_code():
 
 @app.route("/about", methods=["GET"])
 def about():
-    
+
     db = getconnection()
     cur = db.cursor()
-
-    if session["user_id"]:
-        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
-        code = (cur.fetchall())[0][0]
-        return render_template("about.html", code=code)
     
-    else:
+    try:
+        if session["user_id"]:
+            cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+            code = (cur.fetchall())[0][0]
+            return render_template("about.html", code=code)
+
+    except KeyError:
         return render_template("about.html")
 
     cur.close()
@@ -366,12 +368,13 @@ def contact():
     db = getconnection()
     cur = db.cursor()
 
-    if session["user_id"]:
-        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
-        code = (cur.fetchall())[0][0]
-        return render_template("contact.html", code=code)
+    try:
+        if session["user_id"]:
+            cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+            code = (cur.fetchall())[0][0]
+            return render_template("contact.html", code=code)
 
-    else:
+    except KeyError:
         return render_template("contact.html")
 
     cur.close()
@@ -379,22 +382,23 @@ def contact():
 
 # @app.route("/terms&conditions", methods=["GET"])
 # def termsconditions():
-
 #     return render_template("terms&conditions.html")
 
 @app.route("/privacy", methods=["GET"])
 def privacy():
-
+    
     db = getconnection()
     cur = db.cursor()
-
-    if session["user_id"]:
-        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
-        code = (cur.fetchall())[0][0]
-        return render_template("privacy.html", code=code)
-    else:
-        return render_template("privacy.html")
     
+    try:
+        if session["user_id"]:
+            cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+            code = (cur.fetchall())[0][0]
+            return render_template("privacy.html", code=code)
+    
+    except KeyError:
+        return render_template("privacy.html")
+
     cur.close()
     db.close()
 
