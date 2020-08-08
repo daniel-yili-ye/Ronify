@@ -258,10 +258,12 @@ def dashboard():
         
         if "hour" in request.form:
             cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 HOUR) ORDER BY created_at DESC", (session["user_id"], ))
-        elif "day" in request.form:
+        elif "today" in request.form:
             cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 DAY) ORDER BY created_at DESC", (session["user_id"], ))
         elif "week" in request.form:
             cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 WEEK) ORDER BY created_at DESC", (session["user_id"], ))
+        elif "all" in request.form:
+            cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
 
         rows = cur.fetchall()
 
@@ -276,7 +278,7 @@ def dashboard():
 
     else:
 
-        cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
+        cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s AND created_at >= DATE_SUB(NOW(),INTERVAL 1 DAY) ORDER BY created_at DESC", (session["user_id"], ))
         rows = cur.fetchall()
 
         cur.execute("SELECT name FROM business WHERE id = %s", (session["user_id"], ))
