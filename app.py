@@ -242,8 +242,8 @@ def business(code):
 
         return render_template("business.html", name=name, code=code)
 
-        cur.close()
-        db.close()
+    cur.close()
+    db.close()
 
 
 @app.route("/dashboard", methods=["GET", "POST"])
@@ -293,27 +293,27 @@ def dashboard():
     db.close()
 
 
-@app.route("/export", methods=["GET"])
-@login_required
-def export():
+# @app.route("/export", methods=["GET"])
+# @login_required
+# def export():
 
-    db = getconnection()
-    cur = db.cursor()
+#     db = getconnection()
+#     cur = db.cursor()
 
-    cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
-    rows = cur.fetchall()
+#     cur.execute("SELECT name, phone, email, guests, created_at FROM visitor WHERE business_id = %s ORDER BY created_at DESC", (session["user_id"], ))
+#     rows = cur.fetchall()
 
-    #wb = Workbook('customers.xlsx')
-    #wb.add_worksheet('All Data')
+#     wb = Workbook('customers.xlsx')
+#     wb.add_worksheet('All Data')
 
-    #for item in rows:
-    #    wb.write(item)
-    #wb.close()
+#     for item in rows:
+#        wb.write(item)
+#     wb.close()
 
-    #return send_file('path/to/workbook.xlsx')
+#     return send_file('path/to/workbook.xlsx')
 
-    cur.close()
-    db.close()
+#     cur.close()
+#     db.close()
 
 
 
@@ -338,34 +338,65 @@ def qr_code():
 
     buffered = BytesIO()
     qrimg.save(buffered, format='png')
-    img_str = base64.b64encode(buffered.getvalue()).decode()
+    imgstr = base64.b64encode(buffered.getvalue()).decode()
 
-    return render_template("qrcode.html", name=name, code=code, imgstr=img_str)
+    return render_template("qrcode.html", name=name, code=code, imgstr=imgstr)
 
 
 @app.route("/about", methods=["GET"])
 def about():
+    
+    db = getconnection()
+    cur = db.cursor()
 
-    return render_template("about.html")
+    if session["user_id"]:
+        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+        code = (cur.fetchall())[0][0]
+        return render_template("about.html", code=code)
+    
+    else:
+        return render_template("about.html")
 
+    cur.close()
+    db.close()
 
 @app.route("/contact", methods=["GET"])
 def contact():
+    
+    db = getconnection()
+    cur = db.cursor()
 
-    return render_template("contact.html")
+    if session["user_id"]:
+        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+        code = (cur.fetchall())[0][0]
+        return render_template("contact.html", code=code)
 
+    else:
+        return render_template("contact.html")
 
-@app.route("/terms&conditions", methods=["GET"])
-def termsconditions():
+    cur.close()
+    db.close()
 
-    return render_template("terms&conditions.html")
+# @app.route("/terms&conditions", methods=["GET"])
+# def termsconditions():
 
+#     return render_template("terms&conditions.html")
 
 @app.route("/privacy", methods=["GET"])
 def privacy():
 
-    return render_template("privacy.html")
+    db = getconnection()
+    cur = db.cursor()
 
+    if session["user_id"]:
+        cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
+        code = (cur.fetchall())[0][0]
+        return render_template("privacy.html", code=code)
+    else:
+        return render_template("privacy.html")
+    
+    cur.close()
+    db.close()
 
 def errorhandler(e):
     """Handle error"""
