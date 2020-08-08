@@ -16,6 +16,9 @@
 
         <link href="/static/styles.css" rel="stylesheet">
 
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500&display=swap" rel="stylesheet">
+
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -27,11 +30,11 @@
     <body>
 
         <nav class="navbar navbar-expand-md navbar-custom">
-           <a class="navbar-brand" href="/"><span>😷 ronify</span></a>
+           <a class="navbar-brand" href="/"><span class=light>😷 ronify</span></a>
             <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse white" id="navbar">
+            <div class="collapse navbar-collapse white normal" id="navbar">
                 {% if session.user_id %}
                     <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item"><a class="nav-link">{% block li %}{% endblock %}</a></li>
@@ -51,6 +54,7 @@
             </div>
         </nav>
 
+        <!-- idk what this code does -->
         {% if get_flashed_messages() %}
             <header>
                 <div class="alert alert-primary border text-center" role="alert">
@@ -65,7 +69,7 @@
 
 
         <!-- Footer -->
-        <footer class="page-footer font-small blue pt-3">
+        <footer class="page-footer font-small blue pt-3 pb-5 normal">
                 <div class="col-md-6 mt-md-10 mt-2">
                     <ul class="list-unstyled">
                         <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
@@ -74,9 +78,6 @@
                         <li class="nav-item"><a class="nav-link" href="/privacy">Privacy Policy</a></li>
                     </ul>
                 </div>
-        
-                <hr class="clearfix w-100 d-md-none pb-3">
-
 
 
         </footer>

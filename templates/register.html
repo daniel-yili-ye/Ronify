@@ -6,7 +6,9 @@
 
 {% block main %}
     <h1>Register</h1>
+    <div class=normal>
     <form action="/register" method="post">
+        <img src="static/register.svg" alt="Registration">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Company name" type="text">
         </div>
@@ -21,4 +23,5 @@
         </div>
         <button class="btn btn-primary" type="submit">Create Your Account</button>
     </form>
+    </div>
 {% endblock %}

@@ -10,40 +10,42 @@
 
 {% block main%}
   <h1>{{name}}</h1>
-  <div class="btn-group">
-    <form action="/dashboard" method="post">
-      <button type="submit" class="btn btn-primary" name="hour" style="float: left;">Last Hour</button>
-    </form>
-    <form action="/dashboard" method="post">
-      <button type="submit" class="btn btn-primary" name="today">Today (Last 24 hours)</button>
-    </form>
-    <form action="/dashboard" method="post">
-      <button type="submit" class="btn btn-primary" name="week">Last Week</button>
-    </form>
-    <form action="/dashboard" method="post">
-      <button type="submit" class="btn btn-primary" name="all" style="float: right;">All-Time</button>
-    </form>
+  <div class=normal> 
+    <div class="btn-group">
+      <form action="/dashboard" method="post">
+        <button type="submit" class="btn btn-primary" name="hour" style="float: left;">Last Hour</button>
+      </form>
+      <form action="/dashboard" method="post">
+        <button type="submit" class="btn btn-primary" name="today">Today (Last 24 hours)</button>
+      </form>
+      <form action="/dashboard" method="post">
+        <button type="submit" class="btn btn-primary" name="week">Last Week</button>
+      </form>
+      <form action="/dashboard" method="post">
+        <button type="submit" class="btn btn-primary" name="all" style="float: right;">All-Time</button>
+      </form>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Email</th>
+          <th scope="col">Number of Guests</th>
+          <th scope="col">Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+            <tr>
+              <td scope="row">{{row[0]}}</td>
+              <td>{{row[1]}}</td>
+              <td>{{row[2]}}</td>
+              <td>{{row[3]}}</td>
+              <td>{{row[4]}}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Email</th>
-        <th scope="col">Number of Guests</th>
-        <th scope="col">Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for row in rows %}
-          <tr>
-            <td scope="row">{{row[0]}}</td>
-            <td>{{row[1]}}</td>
-            <td>{{row[2]}}</td>
-            <td>{{row[3]}}</td>
-            <td>{{row[4]}}</td>
-          </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 {% endblock %}
