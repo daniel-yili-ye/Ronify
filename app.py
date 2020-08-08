@@ -226,6 +226,7 @@ def business(code):
         try:
             if session["user_id"]:
                 return redirect("/dashboard")
+                
         except KeyError:
             cur.execute("SELECT name FROM business WHERE code = %s", (code, ))
             business_name = (cur.fetchall())[0][0]
@@ -334,6 +335,7 @@ def about():
     db = getconnection()
     cur = db.cursor()
     
+    # Do we need to have this for the footer pages?
     try:
         if session["user_id"]:
             cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
