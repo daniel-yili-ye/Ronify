@@ -366,10 +366,6 @@ def contact():
     cur.close()
     db.close()
 
-# @app.route("/terms&conditions", methods=["GET"])
-# def termsconditions():
-#     return render_template("terms&conditions.html")
-
 @app.route("/privacy", methods=["GET"])
 def privacy():
     

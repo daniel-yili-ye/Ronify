@@ -25,7 +25,7 @@ main .form-control
     display: inline-block;
 
     /* override Bootstrap's 100% width for form controls */
-    width: auto;
+    width: 100%;
 }
 
 main
@@ -69,4 +69,10 @@ footer
 #times
 {
     background-color: #8698ff;
+}
+@media print {
+    footer, .navpills{
+    display:none !important;
+    visibility:hidden;
+    } 
 }
