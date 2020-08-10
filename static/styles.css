@@ -45,7 +45,7 @@ main img
 #powered
 {
     color: #536DFE;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 #toolbar
@@ -80,7 +80,7 @@ main img
 }
 
 @media print {
-    #toolbar, .navpills{
+    #print, #toolbar, .navpills{
     display:none !important;
     visibility:hidden;
     } 
