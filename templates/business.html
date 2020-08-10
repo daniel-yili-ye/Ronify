@@ -2,8 +2,10 @@
 
 {% block main %}
     {% if name %}
-    <h1> {{name}} </h1>
+    <script src="/static/validation.js"></script>
+
     <div class=sizing>
+        <h1> {{name}} </h1>
         <h5 class="grey light">Due to public health regulations, businesses are required to collect the following information about their customers:</h5>
         <br><br>
         <form action="/business/{{code}}" method="post" class="needs-validation" novalidate>
@@ -29,27 +31,6 @@
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>
     </div>
-
-    <script>
-        // Disable form submissions if there are invalid fields
-        (function() {
-          'use strict';
-          window.addEventListener('load', function() {
-            // Get the forms we want to add validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
-              form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-              }, false);
-            });
-          }, false);
-        })();
-    </script>
 
     {% else %}
     <h3 class="normal">Sorry, the following business does not exist.</h3>
