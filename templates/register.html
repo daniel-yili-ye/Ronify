@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block main %}
+<div class=sizing>
     <h1>Register</h1>
     <div class=normal>
     <form action="/register" method="post" class="needs-validation" novalidate>
-        <img src="static/register.svg" alt="Registration">
+        <img src="static/register.svg" alt="Registration" style="max-height:300px;">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Company name" type="text" required>
             <div class="valid-feedback">Looks good!</div>
