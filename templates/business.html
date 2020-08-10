@@ -1,28 +1,57 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    {% if name %}
+    <!-- {% if name %} -->
     <h1> {{name}} </h1>
-    <div class=normal>
+    <div class="normal">
         <h5 class="grey light" style="max-width: 700px;display: inline-block;"> Due to public health regulations, businesses are required to collect the following information about their customers:</h5>
         <br><br>
-        <form action="/business/{{code}}" method="post" novalidate>
+        <form action="/business/{{code}}" method="post" class="needs-validation" novalidate>
             <div class="form-group">
                 <input autocomplete="on" autofocus class="form-control" name="name" placeholder="Name" type="text" required>
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please enter your name.</div>
             </div>
             <div class="form-group">
                 <input autocomplete="on" autofocus class="form-control" name="phone" placeholder="Phone (###-###-####)" type="tel" pattern="^\d{3}-\d{3}-\d{4}$" required>
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please enter your phone number (###-###-####).</div>
             </div>
             <div class="form-group">
                 <input autocomplete="on" autofocus class="form-control" name="email" placeholder="Email (optional)" type="email">
+                <div class="valid-feedback">Looks good!</div>
             </div>
             <div class="form-group">
                 <input autocomplete="off" autofocus class="form-control" name="guests" placeholder="Number of Guests" type="number" min=1 required>
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please enter valid number of guests.</div>
             </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>
     </div>
-    {% else %}
-    <h3 class=normal>Sorry, the following business does not exist.</h3>
-    {% endif %}
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+          'use strict';
+          window.addEventListener('load', function() {
+            // Get the forms we want to add validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+    </script>
+
+    <!-- {% else %}
+    <h3 class="normal">Sorry, the following business does not exist.</h3>
+    {% endif %} -->
 {% endblock %}

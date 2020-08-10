@@ -7,21 +7,50 @@
 {% block main %}
     <h1>Register</h1>
     <div class=normal>
-    <form action="/register" method="post">
+    <form action="/register" method="post" class="needs-validation" novalidate>
         <img src="static/register.svg" alt="Registration">
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Company name" type="text">
+            <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Company name" type="text" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter your business name.</div>
         </div>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text">
+            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter valid email.</div>
         </div>
         <div class="form-group">
-            <input class="form-control" name="password" placeholder="Password" type="password">
+            <input class="form-control" name="password" placeholder="Password" type="password" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter your password.</div>
         </div>
         <div class="form-group">
-            <input class="form-control" name="confirm" placeholder="Confirm Password" type="password">
+            <input class="form-control" name="confirm" placeholder="Confirm Password" type="password" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter your confirmation password</div>
         </div>
-        <button class="btn btn-primary" type="submit">Create Your Account</button>
+        <button class="btn btn-primary" type="submit">Create Your Account.</button>
     </form>
     </div>
+
+    <script>
+        // Disable form submissions if there are invalid fields
+        (function() {
+          'use strict';
+          window.addEventListener('load', function() {
+            // Get the forms we want to add validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+    </script>
 {% endblock %}
