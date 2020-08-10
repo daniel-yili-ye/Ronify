@@ -6,16 +6,16 @@
 
 {% block main %}
     <h1>Login</h1>
-    <div class=normal>
-    <img src="static/login.svg" alt="Logging In">
-    <form action="/login" method="post">
-        <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text">
-        </div>
-        <div class="form-group">
-            <input class="form-control" name="password" placeholder="Password" type="password">
-        </div>
-        <button class="btn btn-primary" type="submit">Log In</button>
-    </form>
+    <div class=normal style="max-width: 500px;display: inline-block;">
+        <img src="static/login.svg" alt="Logging In" style="float: left">
+        <form action="/login" method="post">
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text">
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password" placeholder="Password" type="password">
+            </div>
+            <button class="btn btn-primary" type="submit">Log In</button>
+        </form>
     </div>
 {% endblock %}

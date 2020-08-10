@@ -4,11 +4,11 @@
     {% if name %}
     <h1> {{name}} </h1>
     <div class=normal>
-        <h6 class="grey"> Due to public health regulations, businesses are required to collect the following information about their customers:</h6>
-        <br>
+        <h5 class="grey light" style="max-width: 700px;display: inline-block;"> Due to public health regulations, businesses are required to collect the following information about their customers:</h5>
+        <br><br>
         <form action="/business/{{code}}" method="post" novalidate>
             <div class="form-group">
-                <input autocomplete="on" autofocus class="form-control" name="name" placeholder="Name" type="text" style="width:100%;" required>
+                <input autocomplete="on" autofocus class="form-control" name="name" placeholder="Name" type="text" required>
             </div>
             <div class="form-group">
                 <input autocomplete="on" autofocus class="form-control" name="phone" placeholder="Phone (###-###-####)" type="tel" pattern="^\d{3}-\d{3}-\d{4}$" required>
