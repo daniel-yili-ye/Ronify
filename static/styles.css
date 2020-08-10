@@ -23,9 +23,8 @@ main .form-control
 {
     /* center form controls */
     display: inline-block;
-
-    /* override Bootstrap's 100% width for form controls */
     width: 100%;
+    max-width: 700px;
 }
 
 main
@@ -70,6 +69,7 @@ footer
 {
     background-color: #8698ff;
 }
+
 @media print {
     footer, .navpills{
     display:none !important;
