@@ -12,6 +12,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 from io import BytesIO
 from helpers import apology, login_required
+from datetime import datetime
 
 # export FLASK_APP='app.py'
 
@@ -167,10 +168,12 @@ def register():
                 code = code + str(i)
             else:
                 break
+        
+        time = datetime.now()
 
         # Insert company name, email, and password hash into database
-        query = "INSERT INTO business (name, code, email, passwordhash, created_at) VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)"
-        values = (name, code, request.form.get("email"), generate_password_hash(request.form.get("password")))
+        query = "INSERT INTO business (name, code, email, passwordhash, created_at) VALUES (%s, %s, %s, %s, %s)"
+        values = (name, code, request.form.get("email"), generate_password_hash(request.form.get("password")), time)
 
         cur.execute(query, values)
 
@@ -216,9 +219,11 @@ def business(code):
         # determines if business id exists for the passed code
         business_id = business_id[0][0]
 
+        time = datetime.now()
+
         # Insert name, phone number, email, guests, and time into customers database
-        query = "INSERT INTO visitor (business_id, name, phone, email, guests, created_at) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
-        values = (business_id, request.form.get("name"), request.form.get("phone"), request.form.get("email"), request.form.get("guests"))
+        query = "INSERT INTO visitor (business_id, name, phone, email, guests, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
+        values = (business_id, request.form.get("name"), request.form.get("phone"), request.form.get("email"), request.form.get("guests"), time)
 
         cur.execute(query, values)
 

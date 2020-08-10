@@ -42,7 +42,13 @@ main img
     max-width: 100%;
 }
 
-footer
+#powered
+{
+    color: #536DFE;
+    font-size: 16px;
+}
+
+#toolbar
 {
     background-color: #536DFE;
     font-size: 16px;
@@ -50,28 +56,31 @@ footer
     box-shadow: 0 50vh 0 50vh #536DFE;
 }
 
-.light {
+.light 
+{
     font-family: 'Raleway', sans-serif;
     font-weight: 300;
 }
 
-.normal, h1 {
+.normal, h1 
+{
     font-family: 'Raleway', sans-serif;
     font-weight: 500;
 }
 
-.i {
+.i 
+{
     width: 100%;
     height: auto;
 }
 
 #times
 {
-    background-color: #8698ff;
+    background-color: #768bff;
 }
 
 @media print {
-    footer, .navpills{
+    #print, #toolbar, .navpills{
     display:none !important;
     visibility:hidden;
     } 
