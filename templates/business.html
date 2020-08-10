@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <!-- {% if name %} -->
+    {% if name %}
     <h1> {{name}} </h1>
     <div class=sizing>
         <h5 class="grey light">Due to public health regulations, businesses are required to collect the following information about their customers:</h5>
@@ -51,7 +51,7 @@
         })();
     </script>
 
-    <!-- {% else %}
+    {% else %}
     <h3 class="normal">Sorry, the following business does not exist.</h3>
-    {% endif %} -->
+    {% endif %}
 {% endblock %}

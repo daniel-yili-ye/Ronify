@@ -244,10 +244,14 @@ def business(code):
         cur.execute("SELECT name FROM business WHERE code = %s", (code, ))
         name = cur.fetchall()
 
-        # passing through business name
-        name = name[0][0]
+        try:
+            # passing through business name
+            name = name[0][0]
 
-        return render_template("business.html", name=name, code=code)
+            return render_template("business.html", name=name, code=code)
+
+        except IndexError:
+            return render_template("business.html")
 
     cur.close()
     db.close()
@@ -340,7 +344,6 @@ def about():
     db = getconnection()
     cur = db.cursor()
     
-    # Do we need to have this for the footer pages?
     try:
         if session["user_id"]:
             cur.execute("SELECT code FROM business WHERE id = %s", (session["user_id"], ))
@@ -352,6 +355,7 @@ def about():
 
     cur.close()
     db.close()
+
 
 @app.route("/contact", methods=["GET"])
 def contact():
@@ -370,6 +374,7 @@ def contact():
 
     cur.close()
     db.close()
+
 
 @app.route("/privacy", methods=["GET"])
 def privacy():
