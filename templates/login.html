@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Login</h1>
-    <div class=normal style="max-width: 500px;display: inline-block;">
+<div class=sizing>
+<h1>Login</h1>
+    <div class=normal>
         <img src="static/login.svg" alt="Logging In" style="float: left">
         <form action="/login" method="post">
             <div class="form-group">
@@ -18,4 +19,5 @@
             <button class="btn btn-primary" type="submit">Log In</button>
         </form>
     </div>
+</div>    
 {% endblock %}

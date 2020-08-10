@@ -76,3 +76,8 @@ footer
     visibility:hidden;
     } 
 }
+
+.sizing {
+    max-width: 500px;
+    display: inline-block;
+}
