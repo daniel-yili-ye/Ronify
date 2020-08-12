@@ -5,7 +5,7 @@ nav .navbar-brand
 }
 
 /* colors for brand */
-.white, a
+.white
 {
     color: white;
 }
@@ -76,7 +76,7 @@ main img
 
 #times
 {
-    background-color: #768bff;
+    background-color:#b0b4fc;
 }
 
 @media print {
