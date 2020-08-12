@@ -16,6 +16,8 @@
 
         <link href="/static/styles.css" rel="stylesheet">
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500&display=swap" rel="stylesheet">
 
@@ -30,7 +32,7 @@
     <body>
 
         <nav class="navbar navbar-expand-md navbar-custom">
-            <a class="navbar-brand" href="/"><span class=light>😷 ronify</span></a>
+            <a class="navbar-brand white" href="/"><span class=light>😷 ronify</span></a>
             <!--
             {% if session.user_id %}
                 <span class="light white mr-auto mt-2">{% block li %}{% endblock %}</span>
@@ -42,15 +44,15 @@
             <div class="collapse navbar-collapse white normal" id="navbar">
                 {% if session.user_id %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/qrcode">QR Code</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('business', code=code) }}">Customer Form</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                        <li class="nav-item"><a class="nav-link white" href="/dashboard">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link white" href="/qrcode">QR Code</a></li>
+                        <li class="nav-item"><a class="nav-link white" href="{{ url_for('business', code=code) }}">Customer Form</a></li>
+                        <li class="nav-item"><a class="nav-link white" href="/logout">Log Out</a></li>
                     </ul>
                 {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                        <li class="nav-item"><a class="nav-link white" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link white" href="/login">Log In</a></li>
                     </ul>
                 {% endif %}
             </div>
@@ -80,10 +82,10 @@
             <footer class="page-footer font-small blue pt-3 pb-5 normal" id=footer>
                     <div class="col-md-6 mt-md-10 mt-2">
                         <ul class="list-unstyled">
-                            <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/contact">Contact Us</a></li>
+                            <li class="nav-item"><a class="nav-link white" href="/about">About Us</a></li>
+                            <li class="nav-item"><a class="nav-link white" href="/contact">Contact Us</a></li>
                             <!--<li class="nav-item"><a class="nav-link" href="/terms&conditions">Terms and Conditions</a></li>-->
-                            <li class="nav-item"><a class="nav-link" href="/privacy">Privacy Policy</a></li>
+                            <li class="nav-item"><a class="nav-link white" href="/privacy">Privacy Policy</a></li>
                         </ul>
                     </div>
             </footer>

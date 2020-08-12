@@ -14,46 +14,52 @@
         <img src="static/register.svg" alt="Registration" style="max-height:300px;">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Company name" type="text" required>
-            <div class="valid-feedback">Looks good!</div>
+            <div class="valid-feedback">Company name entered!</div>
             <div class="invalid-feedback">Please enter your business name.</div>
         </div>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text" required>
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter valid email.</div>
+            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text" pattern="[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*" required>
+            <div class="valid-feedback">Valid email entered!</div>
+            <div class="invalid-feedback">Please enter a valid email (Ex. ronify@email.com).</div>
         </div>
         <div class="form-group">
-            <input class="form-control" name="password" placeholder="Password" type="password" required>
-            <div class="valid-feedback">Looks good!</div>
+            <input class="form-control" name="password" id="password" placeholder="Password" type="password" onkeyup="match();" required>
+            <div class="valid-feedback">Password entered!</div>
             <div class="invalid-feedback">Please enter your password.</div>
         </div>
         <div class="form-group">
-            <input class="form-control" name="confirm" placeholder="Confirm Password" type="password" required>
-            <div class="valid-feedback">Looks good!</div>
+            <input class="form-control" name="confirm" id="confirm" placeholder="Confirm Password" type="password" onkeyup="match();" required>
+            <div class="valid-feedback">Confirmation password entered!</div>
             <div class="invalid-feedback">Please enter your confirmation password</div>
+            <div id="match"></div>
         </div>
-        <button class="btn btn-primary" type="submit">Create Your Account.</button>
+        <button class="btn btn-primary" id="submit" type="submit">Create Your Account.</button>
     </form>
     </div>
 
     <script>
-        // Disable form submissions if there are invalid fields
-        (function() {
-          'use strict';
-          window.addEventListener('load', function() {
-            // Get the forms we want to add validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
-              form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-              }, false);
-            });
-          }, false);
-        })();
+        function match()
+        {
+            if (document.getElementById('password').value == document.getElementById('confirm').value)
+            {
+                document.getElementById('match').innerHTML = 'Passwords match!';
+                document.getElementById('match').style.color = '#28a745';
+                document.getElementById('match').style.fontSize = '12.8px';
+            }
+            else
+            {
+                document.getElementById('match').innerHTML = 'Passwords do not match.';
+                document.getElementById('match').style.color = '#dc3545';
+                document.getElementById('match').style.fontSize = '12.8px';
+            }
+        }
+
+        document.querySelector("form").addEventListener("submit", function(event)
+        {
+            if (!(document.getElementById('password').value == document.getElementById('confirm').value))
+            {
+                event.preventDefault();
+            }
+        });
     </script>
 {% endblock %}
