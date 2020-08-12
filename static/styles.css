@@ -36,12 +36,6 @@ main
     text-align: center;
 }
 
-main img
-{
-    /* constrain images on small screens */
-    max-width: 100%;
-}
-
 #powered
 {
     color: #536DFE;
@@ -68,12 +62,6 @@ main img
     font-weight: 500;
 }
 
-.i 
-{
-    width: 100%;
-    height: auto;
-}
-
 #times
 {
     background-color: #768bff;
@@ -88,5 +76,12 @@ main img
 
 .sizing {
     max-width: 500px;
+}
+
+.block {
     display: inline-block;
+}
+
+main img {
+    width: 400px;
 }
