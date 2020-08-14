@@ -40,7 +40,11 @@
     <script>
         function match()
         {
-            if (document.getElementById('password').value == document.getElementById('confirm').value)
+            if (document.getElementById('password').value == "" && document.getElementById('confirm').value == "")
+            {
+                document.getElementById('match').innerHTML = '';
+            }
+            else if (document.getElementById('password').value == document.getElementById('confirm').value)
             {
                 document.getElementById('match').innerHTML = 'Passwords match!';
                 document.getElementById('match').style.color = '#28a745';
