@@ -11,7 +11,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 from io import BytesIO
-from helpers import apology, login_required
+from helpers import login_required
 from datetime import datetime
 
 # export FLASK_APP='app.py'
@@ -77,23 +77,11 @@ def login():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # Ensure email was submitted
-        if not request.form.get("email"):
-            return apology("must provide email", 403)
-
-        # Ensure password was email
-        elif not request.form.get("password"):
-            return apology("must provide password", 403)
-
         # Query database for password based on user's email
         cur.execute("SELECT id, passwordhash FROM business WHERE email = %s", (request.form.get("email"), ))
         rows = cur.fetchall()
         user_id = rows[0][0]
         p_hash = rows[0][1]
-
-        # Ensure email exists and password is correct
-        if len(rows) != 1 or not check_password_hash(p_hash, request.form.get("password")):
-            return apology("invalid email and/or password", 403)
 
         # Remember which user has logged in
         session["user_id"] = user_id
@@ -132,26 +120,6 @@ def register():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
-        # Ensure username was submitted
-        if not request.form.get("name"):
-            return apology("must provide a company name", 403)
-
-        # Ensure email was submitted
-        elif not request.form.get("email"):
-            return apology("must provide email", 403)
-
-        # Ensure password was submitted
-        elif not request.form.get("password"):
-            return apology("must provide password", 403)
-
-        # Ensure confirmation password was submitted
-        elif not request.form.get("confirm"):
-            return apology("must provide a confirmation password", 403)
-
-        # Ensure the password and confirmation password match
-        elif request.form.get("password") != request.form.get("confirm"):
-            return apology("password and confirmation do not match", 403)
 
         # Creating unique code from business name
         name = request.form.get("name").strip()
@@ -200,18 +168,6 @@ def business(code):
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
-        # Ensure a name was submitted
-        if not request.form.get("name"):
-            return apology("must provide a name", 403)
-
-        # Ensure phone number was submitted
-        elif not request.form.get("phone"):
-            return apology("must provide a phone number", 403)
-        
-        # Ensure number of guests was submitted
-        elif not request.form.get("guests"):
-            return apology("must provide number of guests", 403)
 
         cur.execute("SELECT id FROM business WHERE code = %s", (code, ))
         business_id = cur.fetchall()
@@ -393,14 +349,3 @@ def privacy():
 
     cur.close()
     db.close()
-
-def errorhandler(e):
-    """Handle error"""
-    if not isinstance(e, HTTPException):
-        e = InternalServerError()
-    return apology(e.name, e.code)
-
-
-# Listen for errors
-for code in default_exceptions:
-    app.errorhandler(code)(errorhandler)
