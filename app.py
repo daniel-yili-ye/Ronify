@@ -121,6 +121,13 @@ def register():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
+        cur.execute("SELECT email FROM business")
+        emails = cur.fetchall()
+
+        for email in emails:
+            if request.form.get("email") == email[0]:
+                return render_template("register.html", error="Previous email is already registered, please use a different one.")
+
         # Creating unique code from business name
         name = request.form.get("name").strip()
         code = re.sub('[^A-Za-z0-9]+', '', name)
@@ -265,7 +272,6 @@ def dashboard():
 
 #     cur.close()
 #     db.close()
-
 
 
 @app.route("/qrcode", methods=["GET"])
