@@ -83,6 +83,10 @@ def login():
         user_id = rows[0][0]
         p_hash = rows[0][1]
 
+        # Ensure email exists and password is correct
+        if len(rows) != 1 or not check_password_hash(p_hash, request.form.get("password")):
+            return render_template("login.html", error="Invalid email or password.")
+
         # Remember which user has logged in
         session["user_id"] = user_id
 
@@ -126,7 +130,7 @@ def register():
 
         for email in emails:
             if request.form.get("email") == email[0]:
-                return render_template("register.html", error="Previous email is already registered, please use a different one.")
+                return render_template("register.html", error="Previously entered email is already registered.")
 
         # Creating unique code from business name
         name = request.form.get("name").strip()
