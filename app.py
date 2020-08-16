@@ -80,12 +80,16 @@ def login():
         # Query database for password based on user's email
         cur.execute("SELECT id, passwordhash FROM business WHERE email = %s", (request.form.get("email"), ))
         rows = cur.fetchall()
+        
+        if len(rows) != 1:
+            return render_template("login.html", error="Invalid email.")
+    
         user_id = rows[0][0]
         p_hash = rows[0][1]
+        
+        if not check_password_hash(p_hash, request.form.get("password")):
+            return render_template("login.html", error="Invalid password.")
 
-        # Ensure email exists and password is correct
-        if len(rows) != 1 or not check_password_hash(p_hash, request.form.get("password")):
-            return render_template("login.html", error="Invalid email or password.")
 
         # Remember which user has logged in
         session["user_id"] = user_id
