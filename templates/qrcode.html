@@ -6,7 +6,7 @@
 
 {% block main %}
 <h1>{{name}}</h1>
-    <img src="data:image/;base64,{{imgstr}}" alt="Your Ronify QR Code">
+    <img src="data:image/;base64,{{imgstr}}" alt="Your Ronify QR Code" style="max-width: 100%;">
 <div class=text-left>
     <br>
     <h3 class=normal>Instructions</h3>
@@ -26,5 +26,5 @@
     </div>
 </div> 
 <br>
-<button id="print" type="button" class="btn btn-primary" onclick="window.print();return false;">Print Page</button>
+<button id="print" type="button" class="btn btn-primary btn-signup btn-lg" onclick="window.print();return false;">Print Page</button>
 {% endblock %}

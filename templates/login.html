@@ -7,30 +7,29 @@
 {% block main %}
 <script src="/static/validation.js"></script>
 
-<div class=sizing>
 <h1>Login</h1>
-    <div class=normal>
-        <img src="static/login.svg" alt="Logging In" style="float: left">
-        <form action="/login" method="post" class="needs-validation" novalidate>
-            <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text" required>
-                <div class="valid-feedback">Email entered!</div>
-                <div class="invalid-feedback">Please enter valid email.</div>
+<div class="normal">
+    <!--<img src="static/login.svg" alt="Logging In" style="float: left">-->
+    <form action="/login" method="post" class="needs-validation" novalidate>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text" required>
+            <div class="valid-feedback">Email entered!</div>
+            <div class="invalid-feedback">Please enter valid email.</div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password" required>
+            <div class="valid-feedback">Password entered!</div>
+            <div class="invalid-feedback">Please enter your password.</div>
+        </div>
+        {% if error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="font-size: 16px;">
+                {{error}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group">
-                <input class="form-control" name="password" placeholder="Password" type="password" required>
-                <div class="valid-feedback">Password entered!</div>
-                <div class="invalid-feedback">Please enter your password.</div>
-            </div>
-            {% if error %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="font-size: 16px;">
-                    {{error}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endif %}
-            <button class="btn btn-primary" type="submit">Log In</button>
-        </form>
-    </div>
+        {% endif %}
+        <button class="btn btn-primary btn-signup btn-lg" type="submit">Log In</button>
+    </form>
+</div>
 {% endblock %}

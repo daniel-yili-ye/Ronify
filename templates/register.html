@@ -7,11 +7,10 @@
 {% block main %}
 <script src="/static/validation.js"></script>
 
-<div class=sizing>
-    <h1>Register</h1>
-    <div class=normal>
+<h1>Register</h1>
+<div class="normal">
+    <!--<img src="static/register.svg" alt="Registration" style="max-height:300px;">-->
     <form action="/register" method="post" class="needs-validation" novalidate>
-        <img src="static/register.svg" alt="Registration" style="max-height:300px;">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Company name" type="text" required>
             <div class="valid-feedback">Company name entered!</div>
@@ -41,37 +40,37 @@
             <div class="invalid-feedback">Please enter your confirmation password</div>
             <div id="match"></div>
         </div>
-        <button class="btn btn-primary" id="submit" type="submit">Create Your Account.</button>
+        <button class="btn btn-primary btn-signup btn-lg" id="submit" type="submit">Create Your Account.</button>
     </form>
-    </div>
+</div>
 
-    <script>
-        function match()
+<script>
+    function match()
+    {
+        if (document.getElementById('password').value == "" && document.getElementById('confirm').value == "")
         {
-            if (document.getElementById('password').value == "" && document.getElementById('confirm').value == "")
-            {
-                document.getElementById('match').innerHTML = '';
-            }
-            else if (document.getElementById('password').value == document.getElementById('confirm').value)
-            {
-                document.getElementById('match').innerHTML = 'Passwords match!';
-                document.getElementById('match').style.color = '#28a745';
-                document.getElementById('match').style.fontSize = '12.8px';
-            }
-            else
-            {
-                document.getElementById('match').innerHTML = 'Passwords do not match.';
-                document.getElementById('match').style.color = '#dc3545';
-                document.getElementById('match').style.fontSize = '12.8px';
-            }
+            document.getElementById('match').innerHTML = '';
         }
-
-        document.querySelector("form").addEventListener("submit", function(event)
+        else if (document.getElementById('password').value == document.getElementById('confirm').value)
         {
-            if (!(document.getElementById('password').value == document.getElementById('confirm').value))
-            {
-                event.preventDefault();
-            }
-        });
-    </script>
+            document.getElementById('match').innerHTML = 'Passwords match!';
+            document.getElementById('match').style.color = '#28a745';
+            document.getElementById('match').style.fontSize = '12.8px';
+        }
+        else
+        {
+            document.getElementById('match').innerHTML = 'Passwords do not match.';
+            document.getElementById('match').style.color = '#dc3545';
+            document.getElementById('match').style.fontSize = '12.8px';
+        }
+    }
+
+    document.querySelector("form").addEventListener("submit", function(event)
+    {
+        if (!(document.getElementById('password').value == document.getElementById('confirm').value))
+        {
+            event.preventDefault();
+        }
+    });
+</script>
 {% endblock %}

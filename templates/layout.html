@@ -31,7 +31,7 @@
 
     <body>
 
-        <nav class="navbar navbar-expand-md navbar-custom">
+        <nav class="navbar navbar-expand-md navbar-custom sticky-top">
             <a class="navbar-brand white" href="/"><span class=light>😷 ronify</span></a>
             <!--
             {% if session.user_id %}
@@ -44,15 +44,15 @@
             <div class="collapse navbar-collapse white normal" id="navbar">
                 {% if session.user_id %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link white" href="/dashboard">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link white" href="/qrcode">QR Code</a></li>
-                        <li class="nav-item"><a class="nav-link white" href="{{ url_for('business', code=code) }}">Customer Form</a></li>
-                        <li class="nav-item"><a class="nav-link white" href="/logout">Log Out</a></li>
+                        <li class="nav-item"><a class="nav-link white hov" href="/dashboard">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link white hov" href="/qrcode">QR Code</a></li>
+                        <li class="nav-item"><a class="nav-link white hov" href="{{ url_for('business', code=code) }}">Customer Form</a></li>
+                        <li class="nav-item"><a class="nav-link white hov" href="/logout">Log Out</a></li>
                     </ul>
                 {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link white" href="/register">Register</a></li>
-                        <li class="nav-item"><a class="nav-link white" href="/login">Log In</a></li>
+                        <li class="nav-item"><a class="nav-link white hov" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link white hov" href="/login">Log In</a></li>
                     </ul>
                 {% endif %}
             </div>
@@ -82,10 +82,10 @@
             <footer class="page-footer font-small blue pt-3 pb-5 normal" id=footer>
                     <div class="col-md-6 mt-md-10 mt-2">
                         <ul class="list-unstyled">
-                            <li class="nav-item"><a class="nav-link white" href="/about">About Us</a></li>
-                            <li class="nav-item"><a class="nav-link white" href="/contact">Contact Us</a></li>
+                            <li class="nav-item"><a class="nav-link white hov" href="/about">About Us</a></li>
+                            <li class="nav-item"><a class="nav-link white hov" href="/contact">Contact Us</a></li>
                             <!--<li class="nav-item"><a class="nav-link" href="/terms&conditions">Terms and Conditions</a></li>-->
-                            <li class="nav-item"><a class="nav-link white" href="/privacy">Privacy Policy</a></li>
+                            <li class="nav-item"><a class="nav-link white hov" href="/privacy">Privacy Policy</a></li>
                         </ul>
                     </div>
             </footer>
