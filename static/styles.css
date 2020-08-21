@@ -17,14 +17,31 @@ nav .navbar-brand
 
 .navbar-custom { 
     background-color: #536DFE;
+    color: white;
+}
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: white;
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: white;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:focus .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: white;
 }
 
 main .form-control
 {
     /* center form controls */
     display: inline-block;
-    width: 100%;
-    max-width: 700px;
+    width: 500px;
+    max-width: 100%;
 }
 
 main
@@ -90,8 +107,10 @@ main img {
     background: #00BFA6;
     border: #00BFA6;
     border-radius: 40px;
-    width: 400px;
+    width: 500px;
     max-width: 100%;
+    margin-top: 10px;
+    margin-bottom: 25px;
 }
 
 a:hover {
@@ -101,4 +120,17 @@ a:hover {
 
 .hov:hover {
     text-decoration: underline;
+}
+
+h5 a:hover {
+    color: #1a0dab;
+}
+
+img {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.reg-form {
+    margin-bottom: 1.5rem;
 }
