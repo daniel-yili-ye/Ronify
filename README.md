@@ -1,5 +1,6 @@
 # Ronify
-## Maintain your customer logs without the need for pen and paper!
+
+Maintain your customer logs without the need for pen and paper!
 
 Created by Daniel Ye and Joshua Ye in the summer of 2020.
 
