@@ -299,7 +299,7 @@ def qr_code():
     db.close()
     
     # Generate QR Code
-    qrimg = qrcode.make('https://yesleaf.com/ronify/business/' + code)
+    qrimg = qrcode.make('https://ronify.herokuapp.com/ronify/business/' + code)
 
     buffered = BytesIO()
     qrimg.save(buffered, format='png')
