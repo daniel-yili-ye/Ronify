@@ -1,4 +1,5 @@
 Ronify - Maintain your customer logs without the need for pen and paper!
+
 Created by Daniel Ye and Joshua Ye in the summer of 2020.
 
 Ronify is a web application for small businesses to use to track their customer information in the case of a COVID-19 outbreak. 
