@@ -113,6 +113,11 @@ main img {
     margin-bottom: 25px;
 }
 
+.btn-signup:hover {
+    background: #536DFE;
+    border: #00BFA6;
+}
+
 a:hover {
     color: white;
     text-decoration: underline;
@@ -127,10 +132,22 @@ h5 a:hover {
 }
 
 img {
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 20px;
 }
 
 .reg-form {
     margin-bottom: 1.5rem;
+}
+
+td {
+    white-space: nowrap;
+}
+
+@media only screen and (max-width: 480px) {
+    /* horizontal scrollbar for tables if mobile screen */
+    .tablemobile {
+        overflow-x: auto;
+        display: block;
+    }
 }
