@@ -44,6 +44,23 @@ main .form-control
     max-width: 100%;
 }
 
+.error1
+{
+    /* center error messages */
+    display: inline-block;
+    width: 500px;
+    max-width: 100%;
+}
+
+.error2
+{
+    /* center error messages */
+    width: 500px;
+    margin: 0 auto;
+    margin-bottom: 1.25%;
+    max-width: 100%;
+}
+
 main
 {
     /* scroll horizontally as needed */
