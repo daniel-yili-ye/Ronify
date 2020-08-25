@@ -32,7 +32,7 @@ def after_request(response):
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
@@ -299,7 +299,7 @@ def qr_code():
     db.close()
     
     # Generate QR Code
-    qrimg = qrcode.make('https://ronify.herokuapp.com/ronify/business/' + code)
+    qrimg = qrcode.make('https://ronify.herokuapp.com/business/' + code)
 
     buffered = BytesIO()
     qrimg.save(buffered, format='png')
