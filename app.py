@@ -22,10 +22,6 @@ app = Flask(__name__)
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-@app.before_request
-def make_session_permanent():
-    session.permanent = True
-
 # Ensure responses aren't cached
 @app.after_request
 def after_request(response):
@@ -38,6 +34,7 @@ def after_request(response):
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
 Session(app)
 
 # Configure MySQL
