@@ -1,15 +1,20 @@
 # Ronify
-
 Maintain your customer logs without the need for pen and paper!
 
 Created by Daniel Ye and Joshua Ye in the summer of 2020.
 
-Ronify is a web application for small businesses to use to track their customer information in the case of a COVID-19 outbreak. 
+In Toronto, Canada, small businesses, such as restaurants and beauty salons, are required by law to record their customers' names and phone numbers due to the COVID-19 pandemic.
+Traditionally, business owners would manually write down this information.
 
-Currently, where we are from (Toronto, Canada), restaurants and certain small businesses are required by law to record customer names and phone numbers for customers who choose to physically enter their stores. By tracking this information, restaurants can use this to alert authorities in order to help them notify their customers within the last certain amount of days and control outbreaks.
+Ronify simplifies this process through a web application that allows customers to fill their personal information on their own devices.
+When businesses register on our website, Ronify generates a unique, printable QR code, which can be placed at the entrance of their business for customers to scan.
+If a customer does not have internet or a phone, staff can access a webform on their own device for the customer to submit.
 
-Restaurants are able to sign up using our app to generate a unique, printable QR Code for their business. The printed page can be placed at the entrace of a store for customers to scan upon entry. Once scanned using the customer's mobible device, the QR code leads the customer to a online webform that they can fill our with their personal information. From a business owner perspective they have access to a dashboard table that displays entries from the Last 24 hours, Last Week, Last Month, or All Time depending on which option you select. Additionally, they have access to a webform in order to record customers who do not have a mobile device.
+Once the form is entered, the customer's data is displayed to the business' dashboard upon login.
+This important information can be sorted to show data entries from the last 24 hours, last week, last month, or all-time.
 
-For the back-end, we used Python and its Flask framework and for the front-end we used HTML, CSS, and Javascript. We used MySQL as our database.
+By tracking this data, Ronify enables small businesses to safely monitor their customer history and relay it to authorities in the case of an outbreak.
+
+In the development of Ronify, we used Python and the Flask framework for back-end, and for front-end we used HTML, CSS, and Javascript. We also used MySQL as our database and Figma for designing.
 
 https://ronify.herokuapp.com/
