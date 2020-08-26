@@ -20,13 +20,12 @@
             <div class="invalid-feedback">Please enter your name.</div>
         </div>
         <div class="form-group">
-            <input autocomplete="on" autofocus class="form-control" name="phone" placeholder="Phone" type="tel" required>
+            <input autocomplete="on" autofocus class="form-control" name="phone" placeholder="Phone" pattern="^\d{10}$" type="tel" required>
             <div class="valid-feedback">Valid phone number entered!</div>
             <div class="invalid-feedback">Please enter a valid phone number (Ex. 1234567890).</div>
         </div>
         <div class="form-group">
             <input autocomplete="on" autofocus class="form-control" name="email" placeholder="Email (optional)" type="email" pattern="[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*">
-            <div class="valid-feedback">Valid email entered!</div>
             <div class="invalid-feedback">Please enter a valid email (Ex. ronify@email.com).</div>
         </div>
         <div class="form-group">
