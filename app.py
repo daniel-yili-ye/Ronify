@@ -38,6 +38,7 @@ Session(app)
 
 # Configure MySQL
 # Credentials removed for privacy reasons
+# Database has been closed
 def getconnection():
     db = mysql.connector.connect(
         host="",
