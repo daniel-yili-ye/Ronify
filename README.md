@@ -17,4 +17,4 @@ By tracking this data, Ronify enables small businesses to safely monitor their c
 
 In the development of Ronify, we used Python and the Flask framework for back-end, and for front-end we used HTML, CSS, and Javascript. We also used MySQL as our database and Figma for designing.
 
-Feel free to check us out at https://ronify.herokuapp.com/!
+Feel free to check us out at https://ronify.me/!
