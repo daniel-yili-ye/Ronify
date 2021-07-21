@@ -1,4 +1,5 @@
 # Ronify
+
 Maintain your customer logs without the need for pen and paper!
 
 Created by Daniel Ye and Joshua Ye in the summer of 2020.
@@ -17,4 +18,20 @@ By tracking this data, Ronify enables small businesses to safely monitor their c
 
 In the development of Ronify, we used Python and the Flask framework for back-end, and for front-end we used HTML, CSS, and Javascript. We also used MySQL as our database and Figma for designing.
 
-Feel free to check us out at https://ronify.me/!
+Feel free to check us out our updated site at https://ronify.me/
+
+## Landing Page
+![Landing Page](img/0.png)
+
+## Instructions
+![Instructions](img/1.png)
+
+## Dashboard
+![Dashboard](img/2.png)
+
+## QR Code
+![QR Code](img/3.png)
+
+
+## Form
+![Form](img/4.png)
