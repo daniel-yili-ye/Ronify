@@ -13,7 +13,7 @@ itsdangerous==1.1.0
 lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
-mysql-connector-python==8.0.21
+mysql-connector-python==9.1.0
 protobuf==3.18.3
 pylint==2.5.3
 qrcode==6.1
